@@ -38,7 +38,7 @@ def init_db():
 init_db()
 
 
-# الصفحة الرئيسية والكورسات 
+# Home
 
 @app.route("/")
 def index():
@@ -52,7 +52,8 @@ def index():
 def course_detail(course_id):
     return render_template(f"k{course_id}.html")
 
-# كلاسات و الاشتراك
+
+# Course Enrollment
 
 @app.route("/enroll/<int:course_id>", methods=["POST"])
 def enroll(course_id):
@@ -75,7 +76,7 @@ def enroll(course_id):
     return redirect(url_for("index"))
 
 
-#تسجيل الدخول 
+# Login
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -93,12 +94,12 @@ def login():
             session["user"] = user["username"]
             return redirect(url_for("index"))
         else:
-            return render_template("login.html", error="اسم المستخدم أو كلمة المرور غير صحيحة")
+            return render_template("login.html", error="Invalid username or password")
 
     return render_template("login.html")
 
 
-# إنشاء حساب 
+# Sign Up
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
@@ -108,7 +109,7 @@ def signup():
         confirm_password = request.form.get("confirm_password")
 
         if password != confirm_password:
-            return render_template("signup.html", error="كلمة المرور غير متطابقة")
+            return render_template("signup.html", error="Passwords do not match")
 
         conn = get_db_connection()
 
@@ -118,7 +119,7 @@ def signup():
 
         if existing_user:
             conn.close()
-            return render_template("signup.html", error="اسم المستخدم موجود مسبقاً")
+            return render_template("signup.html", error="Username already exists")
 
         hashed_password = generate_password_hash(password)
 
@@ -135,7 +136,7 @@ def signup():
     return render_template("signup.html")
 
 
-# تسجيل الخروج والحساب 
+# Logout & User Account
 
 @app.route("/logout")
 def logout():
@@ -163,6 +164,7 @@ def account():
     conn.close()
 
     return render_template("account.html", user=session.get("user"), courses=enrolled_courses)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
