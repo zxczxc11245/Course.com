@@ -1,6 +1,6 @@
 # Course.com
 
-#### Video Demo: <URL HERE>
+#### Video Demo: <https://youtu.be/h5ZY52qHp_U>
 
 #### Description:
 
